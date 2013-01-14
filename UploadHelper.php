@@ -14,7 +14,7 @@ class Upload_Helper {
     protected $_file_name = null;
     protected $_allowed_exts = array();
     protected $_overwrite = true;
-    protected $_error = array();
+    protected $_error;
     
     public function __construct($file = '', $uploads_folder = '', $file_name = '') {
         if (isset ($file)){
@@ -53,6 +53,9 @@ class Upload_Helper {
     public function set_allowed_exts($allowed_exts){
         if (is_array ($allowed_exts)){
             $this->_allowed_exts = $allowed_exts;
+        }
+        if (is_string($allowed_exts)){
+            $this->_allowed_exts[] = $allowed_exts;
         }
     }
     
