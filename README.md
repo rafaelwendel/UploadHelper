@@ -47,6 +47,10 @@ Overwrite file with same name? (true or false) - True is default
 
     $upload->set_overwrite(false); // Do not overwrite files with the same name
 
+Limit the size of files? (2MB is default)
+
+    $upload->set_max_size(5); //Set the size in megabytes
+
 Upload the file
 
     if($upload->upload_file()){
