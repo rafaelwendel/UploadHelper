@@ -73,14 +73,30 @@ class Upload_Helper {
     
     
     /**
-     * Constructor method. You can define the file, uploads folder and new file name
+     * The default messages
+     * @access protected
+     * @var array
+     */
+    protected $_default_messages = array();
+    
+    
+    /**
+     * The language of messages. (English (en) or Portuguese (pt) 
+     * @access protected
+     * @var String
+     */
+    protected $_language = 'en';
+    
+    
+    /**
+     * Constructor method. You can define the file, uploads folder, new file name and the language. Define too the default messages
      * @access public
      * @param $file File The file to be upload
      * @param $uploads_folder String The path of the receive folder
      * @param $file_name String The new name
      * @return Void
      */
-    public function __construct($file = '', $uploads_folder = '', $file_name = '') {
+    public function __construct($file = '', $uploads_folder = '', $file_name = '', $language = 'en') {
         if (isset ($file)){
             $this->set_file($file);
         }        
@@ -90,6 +106,42 @@ class Upload_Helper {
         if (isset ($file_name)){
             $this->set_file_name($file_name);
         }
+        
+        $this->set_language($language);
+        $this->set_default_messages();
+    }
+    
+    
+    /**
+     * Set the default messages
+     * @access protected
+     * @return Void
+     */
+    protected function set_default_messages(){
+        $this->_default_messages['en'] = array(
+            '1' => 'File is not set',
+            '2' => 'Uploads folder is not set',
+            '3' => 'Files of type {{exts}} are not allowed',
+            '4' => 'Error when uploading'
+        );
+        
+        $this->_default_messages['pt'] = array(
+            '1' => 'Arquivo não setado',
+            '2' => 'Pasta de uploads não definida',
+            '3' => 'Arquivos do tipo {{exts}} não são permitidos',
+            '4' => 'Erro ao fazer upload'
+        );
+    }
+    
+    
+    /**
+     * Set the language messages
+     * @access public
+     * @param $language String The language
+     * @return Void
+     */
+    public function set_language($language){
+        $this->_language = ($language == 'en' || $language == 'pt' ? $language : 'en');
     }
     
     
@@ -173,11 +225,11 @@ class Upload_Helper {
     /**
      * Set a error message
      * @access protected
-     * @param $error String The error message
+     * @param $error_num String The error number (1, 2, 3 ou 4)
      * @return Void
      */
-    protected function set_error($error){
-        $this->_error = $error;
+    protected function set_error($error_num){
+        $this->_error = $this->_default_messages[$this->_language][$error_num];
     }
     
     
@@ -187,7 +239,7 @@ class Upload_Helper {
      * @return String The error message
      */
     public function get_error(){
-        return $this->_error;
+        return str_replace('{{exts}}', $this->_ext, $this->_error);
     }
     
     
@@ -239,15 +291,15 @@ class Upload_Helper {
      */
     protected function is_valid(){
         if (empty ($this->_file['name'])){
-            $this->set_error('File is not set');
+            $this->set_error(1);
             return false;
         }
         if (empty ($this->_uploads_folder)){
-            $this->set_error('Uploads folder is not set');
+            $this->set_error(2);
             return false;
         }
         if (!in_array ($this->_ext, $this->_allowed_exts)){
-            $this->set_error('Files of type ' . $this->_ext . ' are not allowed');
+            $this->set_error(3);
             return false;
         }
         return true;
@@ -275,7 +327,7 @@ class Upload_Helper {
             return true;
         }
         else{
-            $this->set_error('Error when uploading');
+            $this->set_error(4);
             return false;
         }
     }    
