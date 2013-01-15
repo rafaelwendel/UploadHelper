@@ -335,7 +335,7 @@ class Upload_Helper {
     
     
     /**
-     * Validatethe size of file
+     * Validate the size of file
      * @access protected
      * @return Boolean True if valid
      */
