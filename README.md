@@ -25,24 +25,30 @@ Include the class file path and create a instance
 ### Simple Upload
 
 Set a file
+
     //After a form submit
     $file = $_FILES['file'];
     $upload->set_file($file);
 
 Set the folder to receive the file
+
     $upload->set_uploads_folder('path/to/uploads/folder'); //the relative path
 
 Set the allowed extensions in the upload
+
     $allowed = array('jpg', 'png', 'gif', 'bmp');
     $upload->set_allowed_exts($allowed);
 
 Want to rename the file? (The default is to keep the same name)
+
     $upload->set_file_name('new_name'); //The new name of file
 
 Overwrite file with same name? (true or false) - True is default
+
     $upload->set_overwrite(false); // Do not overwrite files with the same name
 
 Upload the file
+
     if($upload->upload_file()){
         echo 'File has been uploaded to ' . $upload->get_file_path(); 
     }
@@ -53,4 +59,5 @@ Upload the file
 ### Extras
 
 Define a language - English (en) or Portuguese (pt)
+
     $upload->set_language('pt'); // Define the language of messages to portuguese (English is default)
