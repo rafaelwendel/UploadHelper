@@ -1,6 +1,6 @@
 <?php
 /**
- * Sample class for files upload
+ * Simple class for files upload
  *
  * @author Rafael Wendel Pinheiro
  * @version 1.0
