@@ -57,6 +57,14 @@ class Upload_Helper {
     
     
     /**
+     * The max size of file (in MegaBytes)
+     * @access protected
+     * @var Double
+     */
+    protected $_max_size = 2;
+    
+    
+    /**
      * Overwrite file with same name?
      * @access protected
      * @var Boolean
@@ -122,14 +130,16 @@ class Upload_Helper {
             '1' => 'File is not set',
             '2' => 'Uploads folder is not set',
             '3' => 'Files of type {{exts}} are not allowed',
-            '4' => 'Error when uploading'
+            '4' => 'The file size is larger than {{max_size}}MB',
+            '5' => 'Error when uploading'
         );
         
         $this->_default_messages['pt'] = array(
             '1' => 'Arquivo não setado',
             '2' => 'Pasta de uploads não definida',
             '3' => 'Arquivos do tipo {{exts}} não são permitidos',
-            '4' => 'Erro ao fazer upload'
+            '4' => 'O tamanho do arquivo é maior que {{max_size}}MB',
+            '5' => 'Erro ao fazer upload'
         );
     }
     
@@ -196,6 +206,17 @@ class Upload_Helper {
     
     
     /**
+     * Set the max size of file
+     * @access public
+     * @param $max_size Double The max size of file
+     * @return Void
+     */
+    public function set_max_size($max_size){
+        $this->_max_size = $max_size;
+    }
+    
+    
+    /**
      * Set the allowed extensions in the upload
      * @access public
      * @param $file_name String The new name
@@ -239,7 +260,10 @@ class Upload_Helper {
      * @return String The error message
      */
     public function get_error(){
-        return str_replace('{{exts}}', $this->_ext, $this->_error);
+        $this->_error = str_replace('{{exts}}', $this->_ext, $this->_error);
+        $this->_error = str_replace('{{max_size}}', $this->_max_size, $this->_error);
+        
+        return $this->_error;
     }
     
     
@@ -302,6 +326,29 @@ class Upload_Helper {
             $this->set_error(3);
             return false;
         }
+        if (!$this->validate_size()){
+            $this->set_error(4);
+            return false;
+        }
+        return true;
+    }
+    
+    
+    /**
+     * Validatethe size of file
+     * @access protected
+     * @return Boolean True if valid
+     */
+    protected function validate_size(){
+        $file_size = $this->_file['size'];
+        
+        /* Convert bytes to megabytes */
+        $file_size = ($file_size / 1024) / 1024;
+        
+        if ($file_size > $this->_max_size){
+            return false;
+        }
+        
         return true;
     }
     
@@ -327,7 +374,7 @@ class Upload_Helper {
             return true;
         }
         else{
-            $this->set_error(4);
+            $this->set_error(5);
             return false;
         }
     }    
