@@ -43,11 +43,11 @@ Want to rename the file? (The default is to keep the same name)
 
     $upload->set_file_name('new_name'); //The new name of file
 
-Overwrite file with same name? (true or false) - True is default
+Do you want overwrite file with same name? (true or false) - True is default
 
     $upload->set_overwrite(false); // Do not overwrite files with the same name
 
-Limit the size of files? (2MB is default)
+How to limit the size of the files? (2MB is default)
 
     $upload->set_max_size(5); //Set the size in megabytes
 
@@ -62,6 +62,6 @@ Upload the file
 
 ### Extras
 
-Define a language - English (en) or Portuguese (pt)
+Define the language - English (en) or Portuguese (pt)
 
     $upload->set_language('pt'); // Define the language of messages to portuguese (English is default)
