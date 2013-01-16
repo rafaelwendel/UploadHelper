@@ -128,7 +128,7 @@ class Upload_Helper {
     protected function set_default_messages(){
         $this->_default_messages['en'] = array(
             '1' => 'File is not set',
-            '2' => 'Uploads folder is not set',
+            '2' => 'Uploads folder is not set or no exists',
             '3' => 'Files of type {{exts}} are not allowed',
             '4' => 'The file size is larger than {{max_size}}MB',
             '5' => 'Error when uploading'
@@ -136,7 +136,7 @@ class Upload_Helper {
         
         $this->_default_messages['pt'] = array(
             '1' => 'Arquivo não setado',
-            '2' => 'Pasta de uploads não definida',
+            '2' => 'Pasta de uploads não definida ou não existe',
             '3' => 'Arquivos do tipo {{exts}} não são permitidos',
             '4' => 'O tamanho do arquivo é maior que {{max_size}}MB',
             '5' => 'Erro ao fazer upload'
@@ -318,7 +318,7 @@ class Upload_Helper {
             $this->set_error(1);
             return false;
         }
-        if (empty ($this->_uploads_folder)){
+        if (empty ($this->_uploads_folder) || !file_exists($this->_uploads_folder)){
             $this->set_error(2);
             return false;
         }
